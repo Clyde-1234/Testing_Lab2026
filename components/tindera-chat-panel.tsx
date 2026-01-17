@@ -38,7 +38,9 @@ export function TinderaChatPanel({ isOpen, onClose }: TinderaChatPanelProps) {
     const message = inputRef.current?.value.trim()
     if (message) {
       addMessage(message)
-      inputRef.current.value = ""
+      if (inputRef.current) {
+        inputRef.current.value = ""
+      }
     }
   }
 
@@ -47,7 +49,7 @@ export function TinderaChatPanel({ isOpen, onClose }: TinderaChatPanelProps) {
   return (
     <div className="fixed bottom-20 left-4 z-50 w-80 h-96 bg-white dark:bg-slate-900 rounded-lg shadow-2xl flex flex-col border border-slate-200 dark:border-slate-700 animate-in slide-in-from-bottom-4 duration-300">
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700 bg-gradient-to-r from-green-600 to-green-500">
+      <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700 bg-linear-to-r from-green-600 to-green-500">
         <div className="flex items-center gap-2">
           <div className="text-xl">🌶️</div>
           <div>
@@ -66,7 +68,7 @@ export function TinderaChatPanel({ isOpen, onClose }: TinderaChatPanelProps) {
           {messages.map((message) => (
             <div key={message.id} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
               <div
-                className={`break-words px-3 py-2 rounded-lg text-sm max-w-[calc(100%-16px)] ${
+                className={`wrap-break-words px-3 py-2 rounded-lg text-sm max-w-[calc(100%-16px)] ${
                   message.role === "user"
                     ? "bg-green-600 text-white rounded-br-none"
                     : "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-bl-none"
