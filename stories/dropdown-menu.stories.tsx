@@ -12,32 +12,46 @@ import { User, Mail, Bell, Settings, HelpCircle } from 'lucide-react'
 const meta: Meta<typeof DropdownMenu> = {
   title: 'DropdownMenu',
   component: DropdownMenu,
-  parameters: {
-    layout: 'centered',
+  parameters: { layout: 'centered' },
+  argTypes: {
+    buttonLabel: { control: 'text' },
+    defaultCategory: { control: 'text' },
+    showIcons: { control: 'boolean' },
+    actions: { control: 'object' },
   },
 }
 
 export default meta
 type Story = StoryObj<typeof DropdownMenu>
 
-// Food Categories - selected category appears in the trigger button
+// -------------------
+// Food Categories Story
+// -------------------
 export const FoodCategories: Story = {
   name: 'Food Categories',
-  render: () => {
-    const [selected, setSelected] = useState<string>('')
+  args: {
+    buttonLabel: 'Select Category',
+    defaultCategory: 'None',
+  },
+  render: (args) => {
+    const [selected, setSelected] = useState(
+      args.defaultCategory && args.defaultCategory !== 'None'
+        ? args.defaultCategory
+        : ''
+    )
 
     return (
       <div
         style={{
           display: 'flex',
           justifyContent: 'center',
-          marginTop: '20px', // noticeably higher than center
+          marginTop: '15px', // slightly higher than center
         }}
       >
         <DropdownMenu>
           <DropdownMenuTrigger>
             <button className="px-4 py-2 border rounded-md bg-white w-48 text-left">
-              {selected || 'Select Category'}
+              {selected || args.buttonLabel}
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
@@ -59,25 +73,31 @@ export const FoodCategories: Story = {
   },
 }
 
-// Actions Menu - simple dropdown, no internal labels
+// -------------------
+// Actions Menu Story
+// -------------------
 export const ActionsMenu: Story = {
   name: 'Actions Menu',
-  render: () => (
+  args: {
+    buttonLabel: 'Actions',
+    actions: ['Download', 'Rename', 'Share'],
+  },
+  render: (args) => (
     <div
       style={{
         display: 'flex',
         justifyContent: 'center',
-        marginTop: '20px',
+        marginTop: '15px',
       }}
     >
       <DropdownMenu>
         <DropdownMenuTrigger>
           <button className="px-4 py-2 border rounded-md bg-white w-48 text-left">
-            Actions
+            {args.buttonLabel}
           </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          {['Download', 'Rename', 'Share'].map((action) => (
+          {args.actions?.map((action: string) => (
             <DropdownMenuItem key={action}>{action}</DropdownMenuItem>
           ))}
         </DropdownMenuContent>
@@ -86,38 +106,44 @@ export const ActionsMenu: Story = {
   ),
 }
 
-// Website Menu - icons visible, added gear and help icons
+// -------------------
+// Website Menu Story
+// -------------------
 export const WebsiteMenu: Story = {
   name: 'Website Menu',
-  render: () => (
+  args: {
+    buttonLabel: 'Menu',
+    showIcons: true,
+  },
+  render: (args) => (
     <div
       style={{
         display: 'flex',
         justifyContent: 'center',
-        marginTop: '20px',
+        marginTop: '15px',
       }}
     >
       <DropdownMenu>
         <DropdownMenuTrigger>
           <button className="px-4 py-2 border rounded-md bg-white w-48 text-left">
-            Menu
+            {args.buttonLabel}
           </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuItem>
-            <User className="mr-2 h-4 w-4 inline-block" /> Profile
+            {args.showIcons && <User className="mr-2 h-4 w-4 inline-block" />} Profile
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <Mail className="mr-2 h-4 w-4 inline-block" /> Mail
+            {args.showIcons && <Mail className="mr-2 h-4 w-4 inline-block" />} Mail
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <Bell className="mr-2 h-4 w-4 inline-block" /> Notifications
+            {args.showIcons && <Bell className="mr-2 h-4 w-4 inline-block" />} Notifications
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <Settings className="mr-2 h-4 w-4 inline-block" /> Settings
+            {args.showIcons && <Settings className="mr-2 h-4 w-4 inline-block" />} Settings
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <HelpCircle className="mr-2 h-4 w-4 inline-block" /> Help
+            {args.showIcons && <HelpCircle className="mr-2 h-4 w-4 inline-block" />} Help
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
