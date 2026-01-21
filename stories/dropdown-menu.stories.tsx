@@ -1,115 +1,97 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
+import React, { useState } from 'react'
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuLabel,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubTrigger,
-  DropdownMenuSubContent,
 } from '../components/ui/dropdown-menu'
-import { Button } from '../components/ui/button'
-import { User, Mail, Bell, Download, FileText, Share2, Trash2 } from 'lucide-react'
+import { User, Mail, Bell, Settings, HelpCircle } from 'lucide-react'
 
 const meta: Meta<typeof DropdownMenu> = {
-  title: 'UI/DropdownMenu',
+  title: 'DropdownMenu',
   component: DropdownMenu,
+  parameters: {
+    layout: 'centered',
+  },
 }
 
 export default meta
 type Story = StoryObj<typeof DropdownMenu>
 
-// -----------------
-// Story 1: Food Categories
-// -----------------
+// Food Categories - selected category appears in the trigger button
 export const FoodCategories: Story = {
+  render: () => {
+    const [selected, setSelected] = useState<string>('')
+
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          <button className="px-4 py-2 border rounded-md bg-white w-48 text-left">
+            {selected || 'Select Category'}
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuLabel>Food Categories</DropdownMenuLabel>
+          {['Vegetables', 'Condiments', 'Meat & Fish', 'Fruits', 'Dairy'].map(
+            (cat) => (
+              <DropdownMenuItem
+                key={cat}
+                onClick={() => setSelected(cat)}
+              >
+                {cat}
+              </DropdownMenuItem>
+            )
+          )}
+        </DropdownMenuContent>
+      </DropdownMenu>
+    )
+  },
+}
+
+// Actions Menu - simple dropdown, no internal labels
+export const ActionsMenu: Story = {
   render: () => (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline">Food Categories</Button>
+      <DropdownMenuTrigger>
+        <button className="px-4 py-2 border rounded-md bg-white w-48 text-left">
+          Actions
+        </button>
       </DropdownMenuTrigger>
-
       <DropdownMenuContent>
-        <DropdownMenuLabel>Vegetables</DropdownMenuLabel>
-        <DropdownMenuItem>Tomatoes</DropdownMenuItem>
-        <DropdownMenuItem>Carrots</DropdownMenuItem>
-        <DropdownMenuItem>Peppers</DropdownMenuItem>
-
-        <DropdownMenuLabel>Condiments</DropdownMenuLabel>
-        <DropdownMenuItem>Ketchup</DropdownMenuItem>
-        <DropdownMenuItem>Mayonnaise</DropdownMenuItem>
-        <DropdownMenuItem>Mustard</DropdownMenuItem>
-
-        <DropdownMenuLabel>Fruits</DropdownMenuLabel>
-        <DropdownMenuItem>Apples</DropdownMenuItem>
-        <DropdownMenuItem>Bananas</DropdownMenuItem>
-        <DropdownMenuItem>Oranges</DropdownMenuItem>
-
-        <DropdownMenuLabel>Dairy</DropdownMenuLabel>
-        <DropdownMenuItem>Milk</DropdownMenuItem>
-        <DropdownMenuItem>Cheese</DropdownMenuItem>
-        <DropdownMenuItem>Yogurt</DropdownMenuItem>
+        {['Download', 'Rename', 'Share'].map((action) => (
+          <DropdownMenuItem key={action}>{action}</DropdownMenuItem>
+        ))}
       </DropdownMenuContent>
     </DropdownMenu>
   ),
 }
 
-// -----------------
-// Story 2: File Actions
-// -----------------
-export const FileActions: Story = {
+// Website Menu - icons visible, added gear and help icons
+export const WebsiteMenu: Story = {
   render: () => (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline">File Actions</Button>
+      <DropdownMenuTrigger>
+        <button className="px-4 py-2 border rounded-md bg-white w-48 text-left">
+          Menu
+        </button>
       </DropdownMenuTrigger>
-
       <DropdownMenuContent>
         <DropdownMenuItem>
-          <Download className="mr-2 h-4 w-4" /> Download
+          <User className="mr-2 h-4 w-4 inline-block" /> Profile
         </DropdownMenuItem>
         <DropdownMenuItem>
-          <FileText className="mr-2 h-4 w-4" /> Rename
+          <Mail className="mr-2 h-4 w-4 inline-block" /> Mail
         </DropdownMenuItem>
         <DropdownMenuItem>
-          <Share2 className="mr-2 h-4 w-4" /> Share
+          <Bell className="mr-2 h-4 w-4 inline-block" /> Notifications
         </DropdownMenuItem>
         <DropdownMenuItem>
-          <Trash2 className="mr-2 h-4 w-4" /> Delete
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  ),
-}
-
-// -----------------
-// Story 3: Website Navigation
-// -----------------
-export const SiteNav: Story = {
-  render: () => (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline">User Menu</Button>
-      </DropdownMenuTrigger>
-
-      <DropdownMenuContent>
-        <DropdownMenuItem>
-          <User className="mr-2 h-4 w-4" /> Profile
+          <Settings className="mr-2 h-4 w-4 inline-block" /> Settings
         </DropdownMenuItem>
         <DropdownMenuItem>
-          <Mail className="mr-2 h-4 w-4" /> Messages
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <Bell className="mr-2 h-4 w-4" /> Notifications
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <Download className="mr-2 h-4 w-4" /> Downloads
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <Share2 className="mr-2 h-4 w-4" /> Share
+          <HelpCircle className="mr-2 h-4 w-4 inline-block" /> Help
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
